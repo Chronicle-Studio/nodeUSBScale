@@ -1,0 +1,17 @@
+{
+  "name": "scale",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-hid-stream": "^1.1.0",
+    "usb-detection": "^4.5.0",
+    "ws": "^7.2.0"
+  }
+}
