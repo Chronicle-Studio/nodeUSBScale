@@ -31,23 +31,31 @@
 </div>
 
 <script>
-    const connection = new WebSocket('ws://127.0.0.1:8789');
-    connection.onopen = function() {
-        document.getElementById('scaleStatus').innerHTML = 'connecting';
-    };
-    connection.onclose = function() {
-        document.getElementById('scaleStatus').innerHTML = 'disconnected';
-    };
-    connection.onmessage = function(e) {
-        var scale = JSON.parse(e.data);
-        document.getElementById('scaleStatus').innerHTML = scale.status;
-        document.getElementById('scaleWeight').innerHTML = scale.weight;
-        document.getElementById('scaleUnit').innerHTML = scale.unit;
-    };
-    connection.onerror = function(error) {
-        console.log('WebSocket error:', error);
-        document.getElementById('scaleStatus').innerHTML = 'error';
-    };
+    function connect() {
+        const connection = new WebSocket('ws://127.0.0.1:8789');
+        connection.onopen = function() {
+            document.getElementById('scaleStatus').innerHTML = 'connecting';
+        };
+        connection.onclose = function() {
+            document.getElementById('scaleStatus').innerHTML = 'disconnected';
+
+            setTimeout(function() {
+                connect();
+            }, 5000);
+        };
+        connection.onmessage = function(e) {
+            var scale = JSON.parse(e.data);
+            document.getElementById('scaleStatus').innerHTML = scale.status;
+            document.getElementById('scaleWeight').innerHTML = scale.weight;
+            document.getElementById('scaleUnit').innerHTML = scale.unit;
+        };
+        connection.onerror = function(error) {
+            console.log('WebSocket error:', error);
+            document.getElementById('scaleStatus').innerHTML = 'error';
+        };
+    }
+
+    connect();
 </script>
 
 </body>
