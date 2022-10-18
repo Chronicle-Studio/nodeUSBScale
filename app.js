@@ -1,6 +1,6 @@
 var usbDetect = require('usb-detection'),
     WebSocket = require('ws'),
-    Hidstream = require('node-hid-stream').Hidstream;
+    HID = require('node-hid');
 
 // -----------------------------------------------------------------------------
 // Configuration
@@ -40,11 +40,11 @@ usbDetect.find(scaleVid, scalePid)
     .then(function(devices) {
         if (devices.length > 0) {
             enableScale();
-            // console.log('Scale Found');
+            //console.log('Scale Found');
         }
     })
     .catch(function(err) {
-        // console.log('Scale Not Found');
+        //console.log('Scale Not Found');
     });
 
 // -----------------------------------------------------------------------------
@@ -59,9 +59,8 @@ var scaleStream,
     ;
 
 function enableScale(device) {
-    // console.log(device);
     try {
-        scaleStream = new Hidstream({ vendorId: scaleVid, productId: scalePid });
+        scaleStream = new HID.HID(scaleVid,scalePid);
         scaleStream.on('data', function(data) {
             var cmd    = data[0],
                 status = data[1],
